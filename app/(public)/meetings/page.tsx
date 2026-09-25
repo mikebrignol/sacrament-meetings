@@ -1,24 +1,10 @@
 import MeetingCard from "@/components/MeetingCard";
-import type { SacramentMeeting } from "@/lib/types";
 import { MeetingSearch } from "@/components/MeetingSearch";
 import { Pagination } from "@/components/Pagination";
-import { getMeetings, getMeetingsTotalPages } from "@/lib/meetings-db";
-
-
-// async function getMeetings(): Promise<SacramentMeeting[]> {
-//   const response = await fetch(
-//     "http://localhost:3000/api/meetings",
-//     {
-//       cache: "no-store",
-//     }
-//   );
-
-//   if (!response.ok) {
-//     throw new Error("Failed to fetch meetings");
-//   }
-
-//   return response.json();
-// }
+import {
+  getMeetings,
+  getMeetingsTotalPages,
+} from "@/lib/meetings-db";
 
 export default async function MeetingsPage({
   searchParams,
@@ -42,6 +28,10 @@ export default async function MeetingsPage({
         All Meetings
       </h2>
 
+      <div className="mb-6">
+        <MeetingSearch />
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2">
         {meetings.map((meeting) => (
           <MeetingCard
@@ -51,15 +41,9 @@ export default async function MeetingsPage({
         ))}
       </div>
 
-      <div>
-      <MeetingSearch />
-      {meetings.map((m) => (
-        <MeetingCard key={m.id} meeting={m} />
-      ))}
-
-      <Pagination totalPages={totalPages} />
-
-    </div>
+      <div className="mt-6">
+        <Pagination totalPages={totalPages} />
+      </div>
     </section>
   );
 }

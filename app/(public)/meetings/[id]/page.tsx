@@ -1,6 +1,7 @@
 import MeetingDetail from "@/components/MeetingDetail";
-import type { SacramentMeeting } from "@/lib/types";
+import { getMeetingById } from "@/lib/meetings-db";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface MeetingPageProps {
   params: Promise<{
@@ -8,28 +9,16 @@ interface MeetingPageProps {
   }>;
 }
 
-async function getMeeting(
-  id: string
-): Promise<SacramentMeeting> {
-  const response = await fetch(
-    `http://localhost:3000/api/meetings/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Meeting not found");
-  }
-
-  return response.json();
-}
-
 export default async function MeetingPage({
   params,
 }: MeetingPageProps) {
   const { id } = await params;
-  const meeting = await getMeeting(id);
+
+  const meeting = await getMeetingById(Number(id));
+
+  if (!meeting) {
+    notFound();
+  }
 
   return (
     <section>
