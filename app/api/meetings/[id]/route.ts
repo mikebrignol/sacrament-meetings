@@ -1,27 +1,21 @@
 import { getMeetingById } from "@/lib/meetings-db";
 
-interface RouteContext {
-  params: Promise<{
-    id: string;
-  }>;
-}
-
 export async function GET(
-  request: Request,
-  context: RouteContext
-) {
-  const { id } = await context.params;
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<Response> {
+  const { id: idParam } = await params;
 
-  const meetingId = Number(id);
+  const id = Number(idParam);
 
-  if (!Number.isInteger(meetingId)) {
+  if (!idParam || !Number.isInteger(id)) {
     return Response.json(
-      { error: "Invalid meeting ID" },
+      { error: "Meeting ID must be a number" },
       { status: 400 }
     );
   }
 
-  const meeting = getMeetingById(meetingId);
+  const meeting = await getMeetingById(id);
 
   if (!meeting) {
     return Response.json(
@@ -29,6 +23,8 @@ export async function GET(
       { status: 404 }
     );
   }
+
+  
 
   return Response.json(meeting);
 }
