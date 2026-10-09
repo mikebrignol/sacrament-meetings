@@ -1,4 +1,5 @@
 import MeetingCard from "@/components/MeetingCard";
+import Link from "next/link";
 import { MeetingSearch } from "@/components/MeetingSearch";
 import { Pagination } from "@/components/Pagination";
 import {
@@ -24,9 +25,18 @@ export default async function MeetingsPage({
 
   return (
     <section>
-      <h2 className="mb-6 text-2xl font-bold">
-        All Meetings
-      </h2>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-2xl font-bold">
+          All Meetings
+        </h2>
+
+        <Link
+          href="/meetings/new"
+          className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+        >
+          Create Meeting
+        </Link>
+      </div>
 
       <div className="mb-6">
         <MeetingSearch />
